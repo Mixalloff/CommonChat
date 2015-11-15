@@ -8,46 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import de.tavendo.autobahn.WebSocketConnection;
-import de.tavendo.autobahn.WebSocketException;
-import de.tavendo.autobahn.WebSocketHandler;
-
 public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "de.tavendo.test1";
-
-    private final WebSocketConnection mConnection = new WebSocketConnection();
-
-    private void start() {
-        final String wsuri = "ws://109.60.225.158:3000";
-        try {
-            mConnection.connect(wsuri, new WebSocketHandler() {
-                @Override
-                public void onOpen() {
-                    Log.d(TAG, "Status: Connected to " + wsuri);
-                    mConnection.sendTextMessage("Hello, world!");
-                }
-
-                @Override
-                public void onTextMessage(String payload) {
-                    Log.d(TAG, "Got echo: " + payload);
-                }
-
-                @Override
-                public void onClose(int code, String reason) {
-                    Log.d(TAG, "Connection lost.");
-                }
-            });
-        } catch (WebSocketException e) {
-            Log.d(TAG, e.toString());
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        start();
     }
 
     @Override
