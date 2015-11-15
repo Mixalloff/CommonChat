@@ -37,7 +37,7 @@
             android:inputType="textMultiLine"
             android:ems="10"
             android:id="@+id/chatText"
-            android:textSize="12pt"
+            android:textSize="6pt"
             android:textIsSelectable="false"
             android:text="test text"
             android:scrollbars = "vertical"

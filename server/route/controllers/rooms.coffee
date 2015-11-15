@@ -8,7 +8,7 @@ class Rooms
 			@server.getClientById(clientID)
 		room = new Room participants
 		@server.rooms.push room
-		return "Комната #{room.id} создана"
+		return "#{room.id}"
 
 	enterRoom: (client, params) ->
 		room = @server.getRoomByID(params.id)

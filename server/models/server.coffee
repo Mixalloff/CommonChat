@@ -52,7 +52,7 @@ class Server
 
 	getRoomByID: (id) ->
 		for room in @rooms
-			return room if room.id == id
+			return room if String(room.id) == id
 		return null
 
 	activeClients: ->

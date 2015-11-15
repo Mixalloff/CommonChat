@@ -7,7 +7,8 @@ class Room
 			client.enterRoom @
 
 	sendMessage: (from, msg) ->
-		client.sendMessage(Utils.generateAnswer 'message', {"message":msg, "sender":from.id} ) for client in @participants when client != from && client.online
+		console.log 'im here'
+		client.sendMessage(Utils.generateAnswer 'message', {"message":msg, "sender":from.id} ) for client in @participants when client.online
 
 	showParticipants: ->
 		@participants.map (client) ->
