@@ -1,6 +1,7 @@
 package com.example.mikhail.commonchat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,10 +17,24 @@ import de.tavendo.autobahn.WebSocketException;
 
 public class MainActivity extends AppCompatActivity {
 
+    SharedPreferences settings;
+    EditText nicknameText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        nicknameText = (EditText) findViewById(R.id.nicknameText);
+        settings = this.getSharedPreferences("settings", 0);
+        try {
+            String defaultNick = settings.getString("nickname", "");
+            nicknameText.setText(defaultNick);
+        }catch(Exception e){
+            nicknameText.setText("default");
+        }
+
+
         GlobalVariables.setVariables();
         try {
             GlobalVariables.wscon.connect(GlobalVariables.wsuri, new WebSocket.ConnectionHandler() {
@@ -77,10 +92,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void enterChatClick(View view) {
         //Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+        String nickname = nicknameText.getText().toString();
 
-        EditText nickname = (EditText) findViewById(R.id.nicknameText);
-        ChatCommands.changeNickname(nickname.getText().toString());
+        SharedPreferences.Editor e = settings.edit();
+        e.clear();
+        e.putString("nickname", nickname);
+        e.commit();
+
+        ChatCommands.changeNickname(nickname);
         Intent intent = new Intent(MainActivity.this, ChooseRoomActivity.class);
         startActivity(intent);
     }
+
 }
