@@ -29,6 +29,7 @@
         android:layout_alignLeft="@+id/enterToChatBtn"
         android:layout_alignStart="@+id/enterToChatBtn"
         android:layout_alignRight="@+id/enterToChatBtn"
+        android:textAlignment="center"
         android:layout_alignEnd="@+id/enterToChatBtn" />
 
     <TextView

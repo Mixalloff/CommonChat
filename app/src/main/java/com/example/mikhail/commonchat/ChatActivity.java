@@ -7,12 +7,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import Classes.ChatCommands;
 import Classes.CommandManager;
@@ -29,11 +33,22 @@ public class ChatActivity extends AppCompatActivity {
     CommandsInterface connectInterface;
     String roomName;
     String roomId;
+    ListView messageList;
+    ArrayAdapter<String> adapt;
+    ArrayList<String> messages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        messages = new ArrayList<String>();
+        messageList = (ListView)findViewById(R.id.listView);
+        messageList.setDivider(getResources().getDrawable(android.R.color.transparent));
+        messageList.setDividerHeight(10);
+        adapt = new ArrayAdapter<String>(this,	R.layout.message, messages);
+        messageList.scrollBy(0,0);
+        messageList.setAdapter(adapt);
 
         roomName = getIntent().getStringExtra("Title");
         roomId = getIntent().getStringExtra("roomId");
@@ -43,13 +58,16 @@ public class ChatActivity extends AppCompatActivity {
         connectInterface = new CommandsInterface() {
             @Override
             public void onMessage(JSONObject command) {
-                TextView chatSpace = (TextView)findViewById(R.id.chatText);
-                chatSpace.setMovementMethod(new ScrollingMovementMethod());
+                //TextView chatSpace = (TextView)findViewById(R.id.chatText);
+                //chatSpace.setMovementMethod(new ScrollingMovementMethod());
 
                 try {
                     JSONObject msg = new JSONObject(command.get("data").toString());
-                    chatSpace.setText(chatSpace.getText() + "\n(" + msg.get("time") + ") "+msg.get("senderName")+":\n"+msg.get("message"));
-                    //chatSpace.setText(chatSpace.getText() + "\n"+msg.get("senderName")+":\n"+msg.get("message") +"\n"+ msg.get("time"));
+                    messages.add("(" + msg.get("time") + ") "+msg.get("senderName")+":\n"+msg.get("message"));
+                    adapt.notifyDataSetChanged();
+
+                    //chatSpace.setText(chatSpace.getText() + "\n(" + msg.get("time") + ") "+msg.get("senderName")+":\n"+msg.get("message"));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -88,15 +106,16 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onGetHistory(JSONObject command) {
-                TextView chatSpace = (TextView)findViewById(R.id.chatText);
-                //chatSpace.setMovementMethod(new ScrollingMovementMethod());
-
+                /*TextView chatSpace = (TextView)findViewById(R.id.chatText);
+                chatSpace.setMovementMethod(new ScrollingMovementMethod());*/
+                messages.clear();
                 try {
                     JSONArray data = new JSONArray(command.get("data").toString());
                     for (int i = 0; i < data.length(); i++){
                         JSONObject msg = new JSONObject(data.get(i).toString());
-                        chatSpace.setText(chatSpace.getText() + "\n(" + msg.get("time") + ") "+msg.get("senderName")+":\n"+msg.get("message"));
+                        messages.add("(" + msg.get("time") + ") "+msg.get("senderName")+":\n"+msg.get("message"));
                     }
+                    adapt.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
