@@ -39,7 +39,6 @@
             android:id="@+id/chatText"
             android:textSize="6pt"
             android:textIsSelectable="false"
-            android:text="test text"
             android:scrollbars = "vertical"
             android:padding="10dp"
             android:gravity="bottom"

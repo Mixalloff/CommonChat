@@ -76,6 +76,30 @@ public class ChatCommands {
         GlobalVariables.wscon.sendTextMessage(cmd.toString());
     }
 
+    public static void changeNickname(String nickname){
+        JSONObject cmd = new JSONObject();
+        try{
+            cmd.put("type", "changenickname");
+            cmd.put("data",nickname);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        GlobalVariables.wscon.sendTextMessage(cmd.toString());
+    }
+
+    public static void getHistory(){
+        JSONObject cmd = new JSONObject();
+        try{
+            cmd.put("type", "gethistory");
+            cmd.put("data","Get history");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        GlobalVariables.wscon.sendTextMessage(cmd.toString());
+    }
+
     /*public static void getCommand(String type){
 
         switch(type){

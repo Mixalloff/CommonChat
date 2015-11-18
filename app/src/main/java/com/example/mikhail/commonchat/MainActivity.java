@@ -7,8 +7,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
+import Classes.ChatCommands;
 import Classes.GlobalVariables;
+import de.tavendo.autobahn.WebSocket;
+import de.tavendo.autobahn.WebSocketException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +21,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         GlobalVariables.setVariables();
+        try {
+            GlobalVariables.wscon.connect(GlobalVariables.wsuri, new WebSocket.ConnectionHandler() {
+                @Override
+                public void onOpen() {
+
+                }
+
+                @Override
+                public void onClose(int code, String reason) {
+
+                }
+
+                @Override
+                public void onTextMessage(String payload) {
+
+                }
+
+                @Override
+                public void onRawTextMessage(byte[] payload) {
+
+                }
+
+                @Override
+                public void onBinaryMessage(byte[] payload) {
+
+                }
+            });
+        } catch (WebSocketException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -43,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void enterChatClick(View view) {
         //Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+
+        EditText nickname = (EditText) findViewById(R.id.nicknameText);
+        ChatCommands.changeNickname(nickname.getText().toString());
         Intent intent = new Intent(MainActivity.this, ChooseRoomActivity.class);
         startActivity(intent);
     }

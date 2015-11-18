@@ -20,4 +20,24 @@
         android:paddingRight="25dp"
         android:background="#2635ff"
         android:textColor="#fffcfc" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nicknameText"
+        android:layout_above="@+id/enterToChatBtn"
+        android:layout_alignLeft="@+id/enterToChatBtn"
+        android:layout_alignStart="@+id/enterToChatBtn"
+        android:layout_alignRight="@+id/enterToChatBtn"
+        android:layout_alignEnd="@+id/enterToChatBtn" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Ваш никнейм:"
+        android:id="@+id/textView"
+        android:layout_above="@+id/nicknameText"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

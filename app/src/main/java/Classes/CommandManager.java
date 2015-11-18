@@ -13,9 +13,18 @@ public class CommandManager implements CommandsInterface{
 
     public void CheckCommand(JSONObject command, CommandsInterface cmd) throws JSONException {
         switch (command.get("type").toString()){
-            case "newchat": { cmd.onChatCreate(command);};
-            case "getrooms": { cmd.onGetRooms(command);};
-            case "message": { cmd.onMessage(command); };
+            case "newchat": { cmd.onChatCreate(command);break;}
+            case "getrooms": { cmd.onGetRooms(command);break;}
+            case "message": { cmd.onMessage(command); break;}
+
+            case "changenickname": { cmd.onChangeNickname(command); break;}
+            case "activeclients": { cmd.onGetActiveClients(command); break;}
+            case "showclientinfo": { cmd.onShowClientInfo(command); break;}
+            case "room": { cmd.onEnterRoom(command); break;}
+            case "gethistory": {
+                cmd.onGetHistory(command); break;}
+            case "showroominfo": { cmd.onShowRoomInfo(command);break;}
+
             default: {};
         }
     }
@@ -33,6 +42,35 @@ public class CommandManager implements CommandsInterface{
 
     }
 
-    ;
+    @Override
+    public void onChangeNickname(JSONObject command) {
+
+    }
+
+    @Override
+    public void onGetActiveClients(JSONObject command) {
+
+    }
+
+    @Override
+    public void onShowClientInfo(JSONObject command) {
+
+    }
+
+    @Override
+    public void onEnterRoom(JSONObject command) {
+
+    }
+
+    @Override
+    public void onGetHistory(JSONObject command) {
+
+    }
+
+    @Override
+    public void onShowRoomInfo(JSONObject command) {
+
+    }
+
 
 }

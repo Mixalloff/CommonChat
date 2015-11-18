@@ -49,22 +49,16 @@ public class ChooseRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_room);
 
-       // GlobalVariables glob = (GlobalVariables)this.getApplication();
         roomNames = new ArrayList<String>();
         roomIds = new ArrayList<String>();
         webSocket = GlobalVariables.wscon;
+        // Получаем комнаты
+        ChatCommands.getRooms();
 
         WebSocket.ConnectionHandler connectHandler = new WebSocket.ConnectionHandler() {
             @Override
             public void onOpen() {
 
-                // Добавление нескольких комнат и вывод их списком
-                /*webSocket.sendTextMessage(ChatCommands.newChat());
-                webSocket.sendTextMessage(ChatCommands.newChat());
-                webSocket.sendTextMessage(ChatCommands.newChat());*/
-
-                //webSocket.sendTextMessage(ChatCommands.getRooms());
-                ChatCommands.getRooms();
             }
 
             @Override
@@ -95,12 +89,13 @@ public class ChooseRoomActivity extends AppCompatActivity {
             }
         };
 
-        //GlobalVariables glob = (GlobalVariables)this.getApplication();
-        try {
+        webSocket.changeHandler(connectHandler);
+
+        /*try {
             webSocket.connect(GlobalVariables.wsuri, connectHandler);
         } catch (WebSocketException e) {
             e.printStackTrace();
-        }
+        }*/
 
         // Обработка ответа сервера
             Icmd = new CommandsInterface() {
@@ -133,6 +128,36 @@ public class ChooseRoomActivity extends AppCompatActivity {
                     catch (Exception e){
                     }
                 }
+
+                @Override
+                public void onChangeNickname(JSONObject command) {
+
+                }
+
+                @Override
+                public void onGetActiveClients(JSONObject command) {
+
+                }
+
+                @Override
+                public void onShowClientInfo(JSONObject command) {
+
+                }
+
+                @Override
+                public void onEnterRoom(JSONObject command) {
+
+                }
+
+                @Override
+                public void onGetHistory(JSONObject command) {
+
+                }
+
+                @Override
+                public void onShowRoomInfo(JSONObject command) {
+
+                }
             };
 
         // Добавление пунктов в список
@@ -153,8 +178,9 @@ public class ChooseRoomActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(ChooseRoomActivity.this, ChatActivity.class);
                 intent.putExtra("Title", elementText);
+                intent.putExtra("roomId", roomIds.get(position).toString());
                 startActivity(intent);
-                webSocket = null;
+                //webSocket = null;
                // self.finish();
             }
         });
