@@ -33,7 +33,9 @@ public class ChatActivity extends AppCompatActivity {
     //private final WebSocketConnection mConnection = new WebSocketConnection();
     private final WebSocketConnection mConnection = GlobalVariables.wscon;
     CommandManager cmdManager;
-    WebSocket.ConnectionHandler connectionHandler;
+    CommandsInterface connectInterface;
+
+   // WebSocket.ConnectionHandler connectionHandler;
 
     private void start() {
         //final String wsuri = "ws://109.60.225.158:3000";
@@ -52,8 +54,34 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        connectInterface = new CommandsInterface() {
+            @Override
+            public void onMessage(JSONObject command) {
+                TextView chatSpace = (TextView)findViewById(R.id.chatText);
+                chatSpace.setMovementMethod(new ScrollingMovementMethod());
+
+                try {
+                    JSONObject msg = new JSONObject(command.get("data").toString());
+                    chatSpace.setText(chatSpace.getText() + "\n" + msg.get("sender")+": "+msg.get("message"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onChatCreate(JSONObject command) {
+
+            }
+
+            @Override
+            public void onGetRooms(JSONObject command) {
+
+            }
+        };
+
         //connectionHandler = new WebSocketConnectionHandler() {
-        WebSocket.ConnectionHandler connectHandler = new WebSocket.ConnectionHandler() {
+        WebSocket.ConnectionHandler connectionHandler = new WebSocket.ConnectionHandler() {
             @Override
             public void onOpen() {
                 //Log.d(TAG, "Status: Connected to " + wsuri);
@@ -66,7 +94,7 @@ public class ChatActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }*/
-
+int i = 1;
             }
 
             @Override
@@ -124,38 +152,13 @@ public class ChatActivity extends AppCompatActivity {
             }
         };
 
-        try {
-           // mConnection.disconnect();
-            //mConnection.connect(GlobalVariables.wsuri, connectionHandler);
-            mConnection.connect(GlobalVariables.wsuri, new WebSocketConnectionHandler() {
-                @Override
-                public void onOpen() {
-                    int i = 0;
-                }
+        mConnection.changeHandler(connectionHandler);
+        /*try {
+            mConnection.connect(GlobalVariables.wsuri, connectionHandler);
 
-                @Override
-                public void onClose(int code, String reason) {
-
-                }
-
-                @Override
-                public void onTextMessage(String payload) {
-int a = 1;
-                }
-
-                @Override
-                public void onRawTextMessage(byte[] payload) {
-
-                }
-
-                @Override
-                public void onBinaryMessage(byte[] payload) {
-
-                }
-            });
         } catch (WebSocketException e) {
             e.printStackTrace();
-        }
+        }*/
 
         cmdManager = new CommandManager();
         String roomName = getIntent().getStringExtra("Title");
@@ -163,33 +166,6 @@ int a = 1;
 
         //this.start();
     }
-
-
-    CommandsInterface connectInterface = new CommandsInterface() {
-        @Override
-        public void onMessage(JSONObject command) {
-            TextView chatSpace = (TextView)findViewById(R.id.chatText);
-            chatSpace.setMovementMethod(new ScrollingMovementMethod());
-
-            try {
-                JSONObject msg = new JSONObject(command.get("data").toString());
-                chatSpace.setText(chatSpace.getText() + "\n" + msg.get("sender")+": "+msg.get("message"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        @Override
-        public void onChatCreate(JSONObject command) {
-
-        }
-
-        @Override
-        public void onGetRooms(JSONObject command) {
-
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

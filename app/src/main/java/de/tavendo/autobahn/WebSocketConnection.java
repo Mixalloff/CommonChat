@@ -217,6 +217,11 @@ public class WebSocketConnection implements WebSocket {
    }
 
 
+   public void changeHandler(WebSocket.ConnectionHandler wsHandler){
+      mWsHandler = wsHandler;
+   }
+
+
    public void connect(String wsUri, String[] wsSubprotocols, WebSocket.ConnectionHandler wsHandler, WebSocketOptions options, List<BasicNameValuePair> headers) throws WebSocketException {
 
       // don't connect if already connected .. user needs to disconnect first
