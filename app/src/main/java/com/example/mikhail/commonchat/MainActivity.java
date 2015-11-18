@@ -8,12 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import Classes.GlobalVariables;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        GlobalVariables.setVariables();
     }
 
     @Override
@@ -39,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void enterChatClick(View view) {
-        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+        //Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+        Intent intent = new Intent(MainActivity.this, ChooseRoomActivity.class);
         startActivity(intent);
     }
 }

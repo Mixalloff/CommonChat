@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mikhail.commonchat" >
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +21,10 @@
         <activity
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat" >
+        </activity>
+        <activity
+            android:name=".ChooseRoomActivity"
+            android:label="@string/title_activity_choose_room" >
         </activity>
     </application>
 

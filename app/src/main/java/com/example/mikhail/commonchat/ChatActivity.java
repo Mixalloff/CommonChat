@@ -17,6 +17,11 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 
+import Classes.ChatCommands;
+import Classes.CommandManager;
+import Classes.CommandsInterface;
+import Classes.GlobalVariables;
+import de.tavendo.autobahn.WebSocket;
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketConnectionHandler;
 import de.tavendo.autobahn.WebSocketException;
@@ -25,42 +30,67 @@ import de.tavendo.autobahn.WebSocketException;
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "de.tavendo.test1";
 
-    private final WebSocketConnection mConnection = new WebSocketConnection();
+    //private final WebSocketConnection mConnection = new WebSocketConnection();
+    private final WebSocketConnection mConnection = GlobalVariables.wscon;
+    CommandManager cmdManager;
+    WebSocket.ConnectionHandler connectionHandler;
 
     private void start() {
         //final String wsuri = "ws://109.60.225.158:3000";
-        final String wsuri = "ws://10.0.3.2:3000";
-        try {
-            mConnection.connect(wsuri, new WebSocketConnectionHandler() {
-                @Override
-                public void onOpen() {
-                    Log.d(TAG, "Status: Connected to " + wsuri);
-                    //mConnection.sendTextMessage("Hello, world!");
-                    JSONObject checkRoom = new JSONObject();
-                    try {
+        //final String wsuri = "ws://10.0.3.2:3000";
+       // try {
+            //mConnection.connect(wsuri, new WebSocketConnectionHandler() {
+
+         /*   });
+        } catch (WebSocketException e) {
+            Log.d(TAG, e.toString());
+        }*/
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
+
+        //connectionHandler = new WebSocketConnectionHandler() {
+        WebSocket.ConnectionHandler connectHandler = new WebSocket.ConnectionHandler() {
+            @Override
+            public void onOpen() {
+                //Log.d(TAG, "Status: Connected to " + wsuri);
+                //mConnection.sendTextMessage("Hello, world!");
+                //JSONObject checkRoom = new JSONObject();
+                    /*try {
                         checkRoom.put("type", "getrooms");
                         checkRoom.put("data", "checkRoom");
                         mConnection.sendTextMessage(checkRoom.toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }
+                    }*/
 
+            }
+
+            @Override
+            public void onTextMessage(String message) {
+                cmdManager = new CommandManager();
+                try {
+                    JSONObject cmd = new JSONObject(message);
+                    cmdManager.CheckCommand(cmd, connectInterface);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-                @Override
-                public void onTextMessage(String message) {
-                    Log.d(TAG, "Got echo: " + message);
+                    /*Log.d(TAG, "Got echo: " + message);
                     JSONObject mes = null;
 
                     try {
                         mes = new JSONObject(message);
                         if (mes.get("type").equals("getrooms"))
                         {
-                            getRoom(mes);
+                            //getRoom(mes);
                         }
                         if (mes.get("type").equals("newchat"))
                         {
-                            joinRoom(mes);
+                            //joinRoom(mes);
                         }
                         if (mes.get("type").equals("message"))
                         {
@@ -74,28 +104,92 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }
+                    }*/
 
+            }
 
+            @Override
+            public void onRawTextMessage(byte[] payload) {
+
+            }
+
+            @Override
+            public void onBinaryMessage(byte[] payload) {
+
+            }
+
+            @Override
+            public void onClose(int code, String reason) {
+                Log.d(TAG, "Connection lost.");
+            }
+        };
+
+        try {
+           // mConnection.disconnect();
+            //mConnection.connect(GlobalVariables.wsuri, connectionHandler);
+            mConnection.connect(GlobalVariables.wsuri, new WebSocketConnectionHandler() {
+                @Override
+                public void onOpen() {
+                    int i = 0;
                 }
 
                 @Override
                 public void onClose(int code, String reason) {
-                    Log.d(TAG, "Connection lost.");
+
+                }
+
+                @Override
+                public void onTextMessage(String payload) {
+int a = 1;
+                }
+
+                @Override
+                public void onRawTextMessage(byte[] payload) {
+
+                }
+
+                @Override
+                public void onBinaryMessage(byte[] payload) {
+
                 }
             });
         } catch (WebSocketException e) {
-            Log.d(TAG, e.toString());
+            e.printStackTrace();
         }
+
+        cmdManager = new CommandManager();
+        String roomName = getIntent().getStringExtra("Title");
+        setTitle(roomName);
+
+        //this.start();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
 
-        this.start();
-    }
+    CommandsInterface connectInterface = new CommandsInterface() {
+        @Override
+        public void onMessage(JSONObject command) {
+            TextView chatSpace = (TextView)findViewById(R.id.chatText);
+            chatSpace.setMovementMethod(new ScrollingMovementMethod());
+
+            try {
+                JSONObject msg = new JSONObject(command.get("data").toString());
+                chatSpace.setText(chatSpace.getText() + "\n" + msg.get("sender")+": "+msg.get("message"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void onChatCreate(JSONObject command) {
+
+        }
+
+        @Override
+        public void onGetRooms(JSONObject command) {
+
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -120,16 +214,17 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void enterBtnClick(View view) throws JSONException {
-        JSONObject json = new JSONObject();
-        TextView chatSpace = (TextView)findViewById(R.id.chatText);
+        //JSONObject json = new JSONObject();
+        //TextView chatSpace = (TextView)findViewById(R.id.chatText);
         EditText enteredText = (EditText)findViewById(R.id.messageField);
-        json.put("type", "sendmessage");
+        /*json.put("type", "sendmessage");
         json.put("data", enteredText.getText().toString());
-        mConnection.sendTextMessage(json.toString());
+        mConnection.sendTextMessage(json.toString());*/
+        ChatCommands.sendMessage(enteredText.getText().toString());
         enteredText.setText("");
     }
 
-    public void joinRoom(JSONObject data) throws JSONException {
+    /*public void joinRoom(JSONObject data) throws JSONException {
         String id = data.get("data").toString();
         if (id.contains("[")){
             id = id.substring(1, id.length()-1);
@@ -140,6 +235,8 @@ public class ChatActivity extends AppCompatActivity {
         json.put("type", "enterroom");
         json.put("data", idJSON);
         mConnection.sendTextMessage(json.toString());
+        //ChatCommands.enterRoom(idJSON);
+
     }
 
     public void getRoom(JSONObject data) throws JSONException {
@@ -155,5 +252,5 @@ public class ChatActivity extends AppCompatActivity {
         else{
             joinRoom(data);
         }
-    }
+    }*/
 }
