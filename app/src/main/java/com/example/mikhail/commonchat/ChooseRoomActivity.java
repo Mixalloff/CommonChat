@@ -180,13 +180,9 @@ public class ChooseRoomActivity extends AppCompatActivity {
                 intent.putExtra("Title", elementText);
                 intent.putExtra("roomId", roomIds.get(position).toString());
                 startActivity(intent);
-                //webSocket = null;
-               // self.finish();
             }
         });
     }
-
-   // ChooseRoomActivity self = this;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -217,6 +213,9 @@ public class ChooseRoomActivity extends AppCompatActivity {
         ChatCommands.newChat(newName.getText().toString());
         //webSocket.sendTextMessage(ChatCommands.getRooms());
         ChatCommands.getRooms();
+
+        Toast.makeText(getApplicationContext(), "Комната " + newName.getText().toString() + " создана",
+                Toast.LENGTH_SHORT).show();
         newName.setText("");
     }
 
@@ -224,5 +223,7 @@ public class ChooseRoomActivity extends AppCompatActivity {
     public void onRefreshBtnClick(View view) {
         //webSocket.sendTextMessage(ChatCommands.getRooms());
         ChatCommands.getRooms();
+        Toast.makeText(getApplicationContext(), "Обновлено",
+                Toast.LENGTH_SHORT).show();
     }
 }

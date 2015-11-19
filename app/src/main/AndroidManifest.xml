@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="Анонимный чат" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +24,7 @@
         </activity>
         <activity
             android:name=".ChooseRoomActivity"
-            android:label="@string/title_activity_choose_room" >
+            android:label="Выберите комнату" >
         </activity>
         <activity
             android:name=".ParticipantsActivity"
