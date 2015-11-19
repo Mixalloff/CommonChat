@@ -17,36 +17,10 @@
         android:textSize="12pt"
         android:textIsSelectable="false"
         android:padding="10dp"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_above="@+id/enterMessageBtn" />
-
-    <!--<ScrollView android:id="@+id/textAreaScroller"
-        android:layout_width="fill_parent"
-        android:layout_height="173px"
-        android:layout_x="0px"
-        android:layout_y="25px"
-        android:scrollbars="vertical"
-        android:layout_above="@+id/messageField"
-        android:layout_alignParentTop="true">-->
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/chatText"
-            android:textSize="6pt"
-            android:textIsSelectable="false"
-            android:scrollbars = "vertical"
-            android:padding="10dp"
-            android:gravity="bottom"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_above="@+id/enterMessageBtn" />
-    <!--</ScrollView>-->
+        android:layout_above="@+id/enterMessageBtn"
+        android:layout_alignTop="@+id/listView" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -63,13 +37,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Отправить"
+        android:background="@drawable/buttonback"
         android:id="@+id/enterMessageBtn"
         android:layout_alignBottom="@+id/messageField"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:onClick="enterBtnClick"
         android:textSize="6pt"
-        android:background="#2f3fff"
         android:textColor="#fff9fc"
         android:padding="10dp" />
 
@@ -77,11 +51,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:padding="10dp"
-        android:layout_above="@+id/enterMessageBtn" />
+        android:layout_above="@+id/enterMessageBtn"
+        android:layout_below="@+id/participantBtn"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Участники"
+        android:background="@drawable/buttonback"
+        android:id="@+id/participantBtn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/backChat"
+        android:layout_alignEnd="@+id/backChat"
+        android:onClick="onParticipantBtnClick"
+        android:nestedScrollingEnabled="false"
+        android:textColor="#ffffff" />
 
 
 </RelativeLayout>

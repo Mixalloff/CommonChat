@@ -5,4 +5,5 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="title_activity_choose_room">ChooseRoomActivity</string>
+    <string name="title_activity_participants">ParticipantsActivity</string>
 </resources>

@@ -26,6 +26,11 @@
             android:name=".ChooseRoomActivity"
             android:label="@string/title_activity_choose_room" >
         </activity>
+        <activity
+            android:name=".ParticipantsActivity"
+            android:label="@string/title_activity_participants"
+            android:theme="@style/Theme.AppCompat.Dialog">
+        </activity>
     </application>
 
 </manifest>

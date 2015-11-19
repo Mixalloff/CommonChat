@@ -100,6 +100,18 @@ public class ChatCommands {
         GlobalVariables.wscon.sendTextMessage(cmd.toString());
     }
 
+    public static void showRoomInfo(){
+        JSONObject cmd = new JSONObject();
+        try{
+            cmd.put("type", "showroominfo");
+            cmd.put("data","Get room info");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        GlobalVariables.wscon.sendTextMessage(cmd.toString());
+    }
+
     /*public static void getCommand(String type){
 
         switch(type){

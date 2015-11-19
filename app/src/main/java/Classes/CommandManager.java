@@ -21,8 +21,7 @@ public class CommandManager implements CommandsInterface{
             case "activeclients": { cmd.onGetActiveClients(command); break;}
             case "showclientinfo": { cmd.onShowClientInfo(command); break;}
             case "room": { cmd.onEnterRoom(command); break;}
-            case "gethistory": {
-                cmd.onGetHistory(command); break;}
+            case "gethistory": { cmd.onGetHistory(command); break;}
             case "showroominfo": { cmd.onShowRoomInfo(command);break;}
 
             default: {};

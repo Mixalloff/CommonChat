@@ -1,5 +1,6 @@
 package com.example.mikhail.commonchat;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -37,10 +38,13 @@ public class ChatActivity extends AppCompatActivity {
     ArrayAdapter<String> adapt;
     ArrayList<String> messages;
 
+    ArrayList<String> participants;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        participants = new ArrayList<String>();
 
         messages = new ArrayList<String>();
         messageList = (ListView)findViewById(R.id.listView);
@@ -124,7 +128,28 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onShowRoomInfo(JSONObject command) {
+                try {
+                    JSONObject data = new JSONObject(command.get("data").toString());
+                    participants.clear();
+                    JSONArray arrParticipants = new JSONArray(data.get("participants").toString());
+                    for (int i = 0; i < arrParticipants.length(); i++){
+                        JSONObject person = new JSONObject(arrParticipants.get(i).toString());
+                        if(person.get("isOnline").toString().equals("true"))
+                            participants.add(person.get("name").toString());
+                    }
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                Bundle b=new Bundle();
+                b.putStringArrayList("persons", participants);
+
+                Intent intent = new Intent(ChatActivity.this, ParticipantsActivity.class);
+                intent.putExtras(b);
+                intent.putExtra("countPersons", participants.size());
+                startActivity(intent);
             }
         };
 
@@ -192,5 +217,13 @@ public class ChatActivity extends AppCompatActivity {
         EditText enteredText = (EditText)findViewById(R.id.messageField);
         ChatCommands.sendMessage(enteredText.getText().toString());
         enteredText.setText("");
+    }
+
+    public void onParticipantBtnClick(View view) {
+        /*participants.add("mike");
+        participants.add("mikesad");
+        participants.add("fgsgd");
+        participants.add("kjgsjd");*/
+        ChatCommands.showRoomInfo();
     }
 }
